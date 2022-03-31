@@ -1,0 +1,182 @@
+﻿<Page
+    x:Class="FluffML.BuildPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FluffML"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:eapi="using:e6API"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="#1e1e1e">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="100*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                CornerRadius="0,20,20,0"
+                Margin="0,10,0,10"
+                Background="#2e2e2e"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+            <StackPanel>
+                <Border Background="#262626"
+                        Padding="10,0,10,10"
+                        CornerRadius="10"
+                        Margin="10,30,10,10">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Login"
+                                   HorizontalAlignment="Center"
+                                   FontSize="20"/>
+                            <TextBlock Text="?"
+                                       HorizontalAlignment="Right"
+                                       Margin="0,0,70,0"
+                                       ToolTipService.ToolTip="You need to be logged in to see likes and dislikes. You can generate an API key in the accounts tab on e621.com"
+                                       FontSize="14"/>
+                        </Grid>
+                        <TextBlock Text="Username"
+                                   FontSize="16"/>
+                        <TextBox x:Name="UsernameEntry"/>
+                        <TextBlock Text="API Key"
+                                   FontSize="16"
+                                   Margin="0,10,0,0"/>
+                        <TextBox x:Name="ApiEntry"/>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <Button Margin="40,10,0,0"
+                                    FontSize="16"
+                                    x:Name="LoginButton"
+                                    Click="LoginButton_Click"
+                                    Content="Validate"/>
+                            <muxc:ProgressRing IsIndeterminate="False"
+                                               Width="30"
+                                               Foreground="White"
+                                               x:Name="LoginProgress"
+                                               Maximum="1"
+                                               Value="0"
+                                               Height="30"
+                                               Margin="10,8,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="#262626"
+                        Padding="10,0,10,10"
+                        CornerRadius="10"
+                        Margin="10,10,10,10">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Load Data"
+                                   HorizontalAlignment="Center"
+                                   FontSize="20"/>
+                            <TextBlock Text="?"
+                                       HorizontalAlignment="Right"
+                                       Margin="0,0,50,0"
+                                       ToolTipService.ToolTip="This will download the posts from your likes and dislikes. These will be used to build your ML model. THIS WILL TAKE AWHILE, so go grab a snack :)"
+                                       FontSize="14"/>
+                        </Grid>
+                        <TextBlock Text="Liked Posts: 0"
+                                   FontSize="16"
+                                   x:Name="LikedDisplay"/>
+                        <TextBlock Text="Disliked Posts: 0"
+                                   FontSize="16"
+                                   Margin="0,0,0,0"
+                                   x:Name="DislikedDisplay"/>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <Button HorizontalAlignment="Center"
+                                    Margin="40,10,0,0"
+                                    x:Name="LoadDataButton"
+                                    IsEnabled="False"
+                                    Click="LoadDataButton_Click"
+                                    FontSize="16"
+                                    Content="Load Posts"/>
+                            <muxc:ProgressRing IsIndeterminate="False"
+                                               Width="30"
+                                               Maximum="1"
+                                               Value="0"
+                                               x:Name="LoadDataProgress"
+                                               Height="30"
+                                               Margin="10,8,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="#262626"
+                        Padding="10,0,10,10"
+                        CornerRadius="10"
+                        Margin="10,10,10,10">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Build the model"
+                                   HorizontalAlignment="Center"
+                                   FontSize="20"/>
+                            <TextBlock Text="?"
+                                       HorizontalAlignment="Right"
+                                       Margin="0,0,25,0"
+                                       ToolTipService.ToolTip="This builds a reuseable ML model that predicts if you'd like an image."
+                                       FontSize="14"/>
+                        </Grid>
+                        <muxc:ProgressRing IsIndeterminate="False"
+                                           Width="30"
+                                           x:Name="ModelProgress"
+                                           Height="30"
+                                           Margin="10,8,0,0"/>
+                        <Button HorizontalAlignment="Center"
+                                Margin="0,10,0,0"
+                                FontSize="16"
+                                IsEnabled="False"
+                                x:Name="ModelButton"
+                                Click="ModelButton_Click"
+                                Content="Build the model"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#262626"
+                        Padding="10,0,10,10"
+                        CornerRadius="10"
+                        Margin="10,10,10,10">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Get Predictions"
+                                   HorizontalAlignment="Center"
+                                   FontSize="20"/>
+                            <TextBlock Text="?"
+                                       HorizontalAlignment="Right"
+                                       Margin="0,0,28,0"
+                                       ToolTipService.ToolTip="This will load the latest posts from e621 and use your model to guess if you'd like to see it."
+                                       FontSize="14"/>
+                        </Grid>
+                        <muxc:ProgressRing IsIndeterminate="False"
+                                           Width="30"
+                                           x:Name="PredictProgress"
+                                           Height="30"
+                                           Margin="10,8,0,0"/>
+                        <Button HorizontalAlignment="Center"
+                                Margin="0,10,0,0"
+                                FontSize="16"
+                                IsEnabled="False"
+                                x:Name="GetPredictButton"
+                                Click="GetPredictButton_Click"
+                                Content="Build the model"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border CornerRadius="0,0,0,0"
+                Margin="0,50,0,0"
+                Background="#1e1e1e"
+                Grid.Column="1">
+            <GridView ItemsSource="{x:Bind PostsCollection}">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="eapi:Post">
+                        <Grid>
+                            <Image Source="{x:Bind sample.url}"/>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Border>
+    </Grid>
+</Page>

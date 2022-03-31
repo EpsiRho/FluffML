@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FluffML (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "FluffML (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
