@@ -1,14 +1,15 @@
 ﻿<Page
-    x:Class="Fluff_ML.MainPage"
+    x:Class="FluffML.BuildPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Fluff_ML"
+    xmlns:local="using:FluffML"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     mc:Ignorable="d"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
+    xmlns:eapi="using:e6API" 
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <AcrylicBrush x:Key="BuilderBackgroundBrush" 
                       TintColor="{ThemeResource SystemChromeMediumLowColor}"/>
@@ -16,12 +17,12 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="110"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
 
         <Border CornerRadius="10"
-                Margin="10,50,10,10"
+                Margin="10,10,10,10"
                 Background="{ThemeResource SystemAltLowColor}">
             <Grid>
                 <CommandBar OverflowButtonVisibility="Collapsed"
@@ -43,8 +44,9 @@
                         <TextBox Margin="5,8,0,0"
                                  Width="250"/>
                     </AppBarElementContainer>
-                    <AppBarButton Icon="Find"/>
-                    <AppBarButton Icon="Setting"/>
+                    <AppBarButton Icon="Find"
+                                  x:Name="SearchButton"
+                                  Click="SearchButton_Click"/>
                 </CommandBar>
             </Grid>
         </Border>
@@ -55,12 +57,14 @@
                 Background="{ThemeResource SystemAltLowColor}">
             <Grid>
                 <GridView x:Name="PostsGridView"
+                          ItemsSource="{x:Bind PostsCollection}"
                           Margin="10">
                     <GridView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="eapi:Post">
                             <GridViewItem>
-                                <Grid>
-                                    <Image />
+                                <Grid Width="200"
+                                      Height="200">
+                                    <Image Source="{x:Bind sample.url}"/>
                                 </Grid>
                             </GridViewItem>
                         </DataTemplate>
@@ -186,6 +190,7 @@
                                 <muxc:ProgressBar x:Name="DownloadPostsProgress"
                                                   IsIndeterminate="True"
                                                   Maximum="1"
+                                                  Margin="0,10,0,0"
                                                   Value="0"
                                                   Visibility="Collapsed"/>
                             </StackPanel>
@@ -208,10 +213,50 @@
                     </FlipViewItem>
                     <FlipViewItem>
                         <Grid>
-                            <TextBlock HorizontalAlignment="Center"
-                                       Text="Build Model"
-                                       FontSize="18"
-                                       Margin="10"/>
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <TextBlock HorizontalAlignment="Center"
+                                           Text="Build the model"
+                                           FontSize="18"
+                                           Margin="10,10,10,10"/>
+                                <TextBlock HorizontalAlignment="Center"
+                                           Text="Nummber of times to train"
+                                           TextWrapping="Wrap"
+                                           FontSize="16"
+                                           Margin="10,10,10,10"/>
+                                <muxc:NumberBox x:Name="EpochBox"
+                                                Value="1"
+                                                Width="250"
+                                                SpinButtonPlacementMode="Inline"
+                                                SmallChange="10"
+                                                LargeChange="100" />
+                                <Button HorizontalAlignment="Center"
+                                        x:Name="CreateModelButton"
+                                         Margin="10,10,10,10"
+                                        Click="ModelButton_Click"
+                                        Content="Build"/>
+                                <muxc:ProgressBar x:Name="CreateModelProgress"
+                                                  IsIndeterminate="True"
+                                                  Maximum="1"
+                                                  Value="0"
+                                                  Visibility="Collapsed"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Center">
+                                <Button Margin="10"
+                                        Content="Back"
+                                        x:Name="CreateModelBackButton"
+                                        Click="CreateModelBackButton_Click"
+                                        HorizontalAlignment="Center"/>
+                                <Button Margin="10"
+                                        Content="Close"
+                                        IsEnabled="False"
+                                        x:Name="CreateModelNextButton"
+                                        Click="CreateModelNextButton_Click"
+                                        HorizontalAlignment="Center"/>
+                            </StackPanel>
+                            
                         </Grid>
                     </FlipViewItem>
                 </FlipView>
