@@ -4,10 +4,12 @@ e621 machine learning based on your likes and dislikes!
 ## How does this work
 The application will take you through the process of building and using your model. 
 
+This isn't perfect, and will depend highly on your likes and dislikes, it may not work as well for you as it does for others.
+
 Here's a step by step on what you'll do, why, and some things to consider before starting. 
 
 1. Login to e621
-	- In order to get your likes, your username and API key are required. [Look here]() for a guide in getting your API key. 
+	- In order to get your likes, your username and API key are required.
 	- You can choose to keep your login info ready each time you open the app, or to forget it on app close. 
 2. Load posts from your likes and dislikes, and save them to disk
 	- Your model will be trained to classify images into two labels, liked or disliked, and the model will guess which one any image is. 
